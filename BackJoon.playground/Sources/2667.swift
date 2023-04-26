@@ -4,7 +4,7 @@
 
 import Foundation
 
-public func solution(){
+func solution2667(){
     let size = Int(readLine()!)!
 
     var cnt = 0
