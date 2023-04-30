@@ -1,26 +1,32 @@
-// 589. N-ary Tree Preorder Traversal
+// 102. Binary Tree Level Order Traversal
 // 2023.04.29
-// https://leetcode.com/problems/n-ary-tree-preorder-traversal/description/?envType=study-plan&id=level-1
-// 00:15:47
-
+// https://leetcode.com/problems/binary-tree-level-order-traversal/description/?envType=study-plan&id=level-1
+// 00:15:04
 class Solution {
-    func preorder(_ root: Node?) -> [Int] {
+    var dic = [Int:[Int]]()
+
+    func levelOrder(_ root: TreeNode?) -> [[Int]] {
+        var answer = [[Int]]()
+        
+        if let node = root{
+            dfs(node, 0)
+        }
+        
+        return dic.sorted{$0.0 < $1.0}.map{$0.value}
+    }
+
+    func dfs(_ root: TreeNode, _ deep: Int){
         guard root != nil else {
-            return []
+            return
         }
 
-        var value = root?.val
-        var answer = [value!]
-
-        for i in (root?.children)!{
-            answer += preorder(i)
+        if dic[deep] == nil{
+            dic[deep] = [(root.val)]
+        } else {
+            dic[deep]!.append((root.val))
         }
 
-        return answer
+        if let left = root.left {dfs(left, deep + 1)}
+        if let right = root.right {dfs(right, deep + 1)}
     }
 }
-
-/*
- unwrapping 관련해서를 애를 먹었다
- dfs문제라 어렵지 않게 풀었다.
- */
