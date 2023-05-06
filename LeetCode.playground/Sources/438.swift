@@ -5,52 +5,48 @@
 
 class Solution {
     func findAnagrams(_ s: String, _ p: String) -> [Int] {
-        var result = [Int]()
-        let sChars = Array(s), pChars = Array(p)
-        var dict = [Character: Int]()
-        var left = 0, right = 0, count = pChars.count
         
-        // Initialize the dictionary with the character counts in p
-        for char in pChars {
-            dict[char, default: 0] += 1
+        var sArray = Array(s), pArray = Array(p)
+        var pCount = p.count
+        var answer = [Int]()
+        var window = [Character:Int]()
+        var right = 0, left = 0
+
+        for i in pArray{
+            window[i, default: 0] += 1
         }
 
-        print(dict)
-        
-        while right < sChars.count {
-            // If the character at right index is in the dictionary, decrement its count
-            
-            if let charCount = dict[sChars[right]] {
-                dict[sChars[right]] = charCount - 1
-                if charCount > 0 {
-                    count -= 1
+        while right < sArray.count{
+            if let charCount = window[sArray[right]]{
+                window[sArray[right]] = charCount - 1
+                if charCount > 0{
+                    pCount -= 1
                 }
             }
             right += 1
-            
-            // If count becomes 0, we have found an anagram
-            if count == 0 {
-                result.append(left)
+
+            if pCount == 0{
+                answer.append(left)
             }
-            
-            // If the window size is equal to p's length, move the left pointer and update the dictionary
-            if right - left == pChars.count {
-                if let charCount = dict[sChars[left]] {
-                    dict[sChars[left]] = charCount + 1
-                    if charCount >= 0 {
-                        count += 1
+
+            if right - left == pArray.count{
+                if let charCount = window[sArray[left]]{
+                    window[sArray[left]] = charCount + 1
+                    if charCount >= 0{
+                        pCount += 1
                     }
                 }
                 left += 1
             }
+
         }
-        
-        return result
+        return answer
     }
 }
 
 /*
- 위에는 정답코드 아래는 내 코드
+ 위에는 정답코드 다른 사람의 코드를 보고 내가 다시 만든 것
+ 재미있는 것은 p.count로 할때는 Time Out이 나왔지만 pArray.count 하니까 시간 안에 가능 즉 배열을 재는 것이 String보다 빠르다.
  class Solution {
      func findAnagrams(_ s: String, _ p: String) -> [Int] {
          let sArray = s.map{String($0)}
